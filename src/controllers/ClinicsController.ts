@@ -17,8 +17,8 @@ export class ClinicsController {
         repository.getClinicsByState(args.state),
       postalClinic: (args: { postal: string }) =>
         repository.getClinicsByZip(args.postal),
-      nameClinic: (args: { name: string }) =>
-        repository.getClinicsByName(args.name),
+      nameClinic: (args: { clinicName: string }) =>
+        repository.getClinicsByName(args.clinicName),
       suburbClinic: (args: { suburb: string }) =>
         repository.getClinicsBySuburb(args.suburb),
     };
