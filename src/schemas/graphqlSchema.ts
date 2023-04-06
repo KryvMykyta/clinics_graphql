@@ -1,7 +1,17 @@
-import { buildSchema } from "graphql";
+import { GraphQLEnumType, buildSchema } from "graphql";
+
 
 export const clinicsSchema = buildSchema(`
+  enum searchTypes {
+    city,
+    suburb,
+    state,
+    postal,
+    clinicName,
+  }
+
   type Query {
+    findClinic(searchField: String, searchType: searchTypes): [Clinic],
     cityClinic(city: String): [Clinic],
     stateClinic(state: String): [Clinic],
     postalClinic(postal: String): [Clinic],

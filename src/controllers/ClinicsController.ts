@@ -2,6 +2,14 @@ import { ClinicsRepository } from "../repository/ClinicsRepository";
 import { graphqlHTTP } from "express-graphql";
 import { clinicsSchema } from "./../schemas/graphqlSchema";
 
+enum SearchTypes {
+  city="city",
+  suburb="suburb",
+  state="state",
+  postal="postal",
+  clinicName="clinicName",
+}
+
 export class ClinicsController {
   path: string;
   repository: ClinicsRepository;
@@ -11,6 +19,20 @@ export class ClinicsController {
     this.path = path;
     this.repository = repository;
     const root = {
+      findClinic: (args: { searchField: string; searchType: SearchTypes }) => {
+        switch (args.searchType) {
+          case SearchTypes.city:
+            return repository.getClinicsByCity(args.searchField);
+          case SearchTypes.postal:
+            return repository.getClinicsByZip(args.searchField);
+          case SearchTypes.suburb:
+            return repository.getClinicsBySuburb(args.searchField);
+          case SearchTypes.state:
+            return repository.getClinicsByState(args.searchField);
+          case SearchTypes.clinicName:
+            return repository.getClinicsByName(args.searchField);
+        }
+      },
       cityClinic: (args: { city: string }) =>
         repository.getClinicsByCity(args.city),
       stateClinic: (args: { state: string }) =>
@@ -28,5 +50,4 @@ export class ClinicsController {
       graphiql: true,
     });
   }
-
 }
